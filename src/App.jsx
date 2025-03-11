@@ -15,13 +15,14 @@ function App() {
       <BrowserRouter>
         <section className="app main-layout">
           <AppHeader />
-          <main>
+          <main className="app-main">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/toy" element={<ToyIndex />} />
+              <Route path="/toy" element={<ToyIndex />}>
+                <Route path="/toy/edit/:toyId" element={<ToyEdit />} />
+                <Route path="/toy/edit/" element={<ToyEdit />} />
+              </Route>
               <Route path="/toy/:toyId" element={<ToyDetails />} />
-              <Route path="/toy/edit/:toyId" element={<ToyEdit />} />
-              <Route path="/toy/edit/" element={<ToyEdit />} />
             </Routes>
           </main>
           <AppFooter />

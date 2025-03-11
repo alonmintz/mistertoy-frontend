@@ -1,0 +1,8 @@
+.app-header {
+  background-color: pink;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+}

@@ -3,7 +3,7 @@ import { storageService } from "./async-storage.service.js";
 import { TOYS_MOCK_DATA } from "../model/toys.mockdata.js";
 
 const TOY_KEY = "toyDB";
-const labels = [
+export const TOY_LABELS = [
   "On wheels",
   "Box game",
   "Art",
@@ -24,24 +24,48 @@ export const toyService = {
   getDefaultFilter,
   getDefaultSort,
   getFilterFromSearchParams,
+  getSortFromSearchParams,
   getSpeedStats,
   getVendorStats,
-  labels,
-  // _createBooks,
 };
 // For Debug (easy access from console):
 window.cs = toyService;
 
-//TODO: change the filterBy and sortBy
 function query(filterBy = {}, sortBy = {}) {
   return storageService.query(TOY_KEY).then((toys) => {
     if (filterBy.txt) {
       const regExp = new RegExp(filterBy.txt, "i");
-      toys = toys.filter((toy) => regExp.test(toy.vendor));
+      toys = toys.filter((toy) => regExp.test(toy.name));
     }
 
-    if (filterBy.minSpeed) {
-      toys = toys.filter((toy) => toy.maxSpeed >= filterBy.minSpeed);
+    if (filterBy.inStock) {
+      toys = toys.filter((toy) => toy.inStock === JSON.parse(filterBy.inStock));
+    }
+
+    if (filterBy.labels && filterBy.labels.length > 0) {
+      toys = toys.filter((toy) => {
+        const labels = toy.labels;
+        if (!labels || !labels.length) return false;
+        return labels.some((label) => filterBy.labels.includes(label));
+      });
+    }
+
+    if (sortBy.name !== undefined) {
+      toys = toys.sort(
+        (toy1, toy2) => toy1.name.localeCompare(toy2.name) * sortBy.name
+      );
+    }
+
+    if (sortBy.price !== undefined) {
+      toys = toys.sort(
+        (toy1, toy2) => (toy1.price - toy2.price) * sortBy.price
+      );
+    }
+
+    if (sortBy.createdAt !== undefined) {
+      toys = toys.sort(
+        (toy1, toy2) => (toy1.createdAt - toy2.createdAt) * sortBy.createdAt
+      );
     }
 
     return toys;
@@ -66,18 +90,16 @@ function save(toy) {
     return storageService.post(TOY_KEY, toy);
   }
 }
-//TODO: change empty toy
-function getEmptyToy(vendor = "", maxSpeed = "") {
-  return { vendor, maxSpeed };
+
+function getEmptyToy(name = "", labels = [], price = 0, inStock = false) {
+  return { name, labels, price, inStock };
 }
-//TODO: change default filter
 function getDefaultFilter() {
-  return { txt: "", minSpeed: 0 };
+  return { txt: "", labels: [], inStock: null };
 }
 
-//TODO: complete function
 function getDefaultSort() {
-  return {};
+  return { name: 1 };
 }
 
 function getFilterFromSearchParams(searchParams) {
@@ -87,6 +109,15 @@ function getFilterFromSearchParams(searchParams) {
     filterBy[field] = searchParams.get(field) || "";
   }
   return filterBy;
+}
+
+function getSortFromSearchParams(searchParams) {
+  const defaultSort = getDefaultSort();
+  const sortBy = {};
+  for (const field in defaultSort) {
+    sortBy[field] = searchParams.get(field) || 1;
+  }
+  return sortBy;
 }
 //TODO: change to relevant stats
 function getSpeedStats() {
@@ -110,7 +141,7 @@ function getVendorStats() {
     return data;
   });
 }
-//TODO: change from cars to toys
+
 function _createToys() {
   let toys = utilService.loadFromStorage(TOY_KEY);
   if (!toys || !toys.length) {
@@ -156,29 +187,3 @@ function _getToyCountByVendorMap(toys) {
   }, {});
   return toyCountByVendorMap;
 }
-//TODO: change function to create Toys
-// function _createBooks() {
-//   const ctgs = ["Love", "Fiction", "Poetry", "Computers", "Religion"];
-//   const books = [];
-//   for (let i = 0; i < 20; i++) {
-//     const book = {
-//       id: utilService.makeId(),
-//       title: utilService.makeLorem(2),
-//       subtitle: utilService.makeLorem(4),
-//       authors: [utilService.makeLorem(1)],
-//       publishedDate: utilService.getRandomIntInclusive(1950, 2024),
-//       description: utilService.makeLorem(20),
-//       pageCount: utilService.getRandomIntInclusive(20, 600),
-//       categories: [ctgs[utilService.getRandomIntInclusive(0, ctgs.length - 1)]],
-//       thumbnail: `http://coding-academy.org/books-photos/${i + 1}.jpg`,
-//       language: "en",
-//       listPrice: {
-//         amount: utilService.getRandomIntInclusive(80, 500),
-//         currencyCode: "EUR",
-//         isOnSale: Math.random() > 0.7,
-//       },
-//     };
-//     books.push(book);
-//   }
-//   console.log("books", books);
-// }
