@@ -1,0 +1,16 @@
+.toy-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 15px;
+
+  li {
+    position: relative;
+    padding: em(16px) em(24px);
+    border: solid $color-dark-grey-1000;
+
+    &:hover {
+      box-shadow: $box-shadow-dark-grey;
+      transform: scale(1.001);
+    }
+  }
+}

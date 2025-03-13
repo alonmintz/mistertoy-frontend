@@ -1,13 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import { utilService } from "../../service/util.service";
 import { TOY_LABELS, toyService } from "../../service/toy.service";
+import { Backdrop } from "../general/Backdrop";
 
-export function ToyFilter({ filterBy, onSetFilterBy }) {
+export function ToyFilter({ filterBy, onSetFilterBy, onClose }) {
   const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy });
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+  // const [isClosing, setIsClosing] = useState(false);
   const debounceOnSetFilterBy = useRef(
     utilService.debounce(onSetFilterBy, 500)
   ).current;
+
+  // useEffect(() => {
+  //   console.log({ isClosing });
+
+  //   return setIsClosing(true);
+  // }, []);
 
   useEffect(() => {
     console.log({ filterByToEdit });
@@ -56,77 +64,91 @@ export function ToyFilter({ filterBy, onSetFilterBy }) {
   }
 
   const { txt, labels, inStock } = filterByToEdit;
+  // const closingClass = isClosing ? "" : "closing";
+  // console.log({ closingClass });
 
   return (
-    <section className="toy-filter">
-      <form>
-        <div className="filter-item">
-          <input
-            value={txt}
-            onChange={handleChange}
-            type="search"
-            placeholder="By Text"
-            id="txt"
-            name="txt"
-          />
-        </div>
-        <div className="filter-item">
-          <div
-            onClick={toggleDropdown}
-            style={{
-              cursor: "pointer",
-              border: "1px solid #ccc",
-              padding: "10px",
-            }}
-          >
-            {labels.length > 0 ? labels.join(", ") : "Select labels"}
-            {isDropDownOpen && (
-              <div
-                style={{
-                  border: "1px solid #ccc",
-                  padding: "10px",
-                  marginTop: "5px",
-                  position: "absolute",
-                  backgroundColor: "white",
-                  zIndex: 1,
-                }}
-              >
-                {TOY_LABELS.map((label) => (
-                  <div key={label}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={labels.includes(label)}
-                        onChange={(ev) => {
-                          ev.stopPropagation();
-                          handleCheckboxChange(label);
-                        }}
-                      />
-                      {label}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            )}
+    <Backdrop onClick={onClose}>
+      <section
+        // className={`toy-filter ${closingClass}`}
+        className={`toy-filter`}
+        onClick={(ev) => ev.stopPropagation()}
+      >
+        <h2>Filter</h2>
+        <form>
+          <div className="filter-item">
+            <input
+              value={txt}
+              onChange={handleChange}
+              type="search"
+              placeholder="By Text"
+              id="txt"
+              name="txt"
+            />
           </div>
-        </div>
-        <div className="filter-item">
-          <label htmlFor="isDone">Availability: </label>
-          <select
-            name="inStock"
-            id="inStock"
-            value={inStock || ""}
-            onChange={handleChange}
-          >
-            <option value={""}>All</option>
-            <option value={true}>In Stock</option>
-            <option value={false}>Sold Out</option>
-          </select>
-        </div>
-        <button type="button" onClick={resetFilterByToEdit}>
-          Reset
-        </button>
-      </form>
-    </section>
+          <div className="filter-item">
+            <div
+              onClick={toggleDropdown}
+              style={{
+                cursor: "pointer",
+                border: "1px solid #ccc",
+                padding: "10px",
+              }}
+            >
+              {labels.length > 0 ? labels.join(", ") : "Select labels"}
+              {isDropDownOpen && (
+                <div
+                  style={{
+                    border: "1px solid #ccc",
+                    padding: "10px",
+                    marginTop: "5px",
+                    position: "absolute",
+                    backgroundColor: "white",
+                    zIndex: 1,
+                  }}
+                >
+                  {TOY_LABELS.map((label) => (
+                    <div key={label}>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={labels.includes(label)}
+                          onChange={(ev) => {
+                            ev.stopPropagation();
+                            handleCheckboxChange(label);
+                          }}
+                        />
+                        {label}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="filter-item">
+            <label htmlFor="isDone">Availability: </label>
+            <select
+              name="inStock"
+              id="inStock"
+              value={inStock || ""}
+              onChange={handleChange}
+            >
+              <option value={""}>All</option>
+              <option value={true}>In Stock</option>
+              <option value={false}>Sold Out</option>
+            </select>
+          </div>
+          <div className="button-group">
+            <button type="button" onClick={resetFilterByToEdit}>
+              Reset
+            </button>
+            <button type="button" onClick={onClose}>
+              Results
+            </button>
+          </div>
+        </form>
+      </section>
+    </Backdrop>
   );
 }

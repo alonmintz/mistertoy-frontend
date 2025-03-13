@@ -1,0 +1,86 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  color: $color-dark-grey-1000;
+}
+
+body {
+  margin: 0;
+  background-color: $color-grey-1200;
+
+  //   @include for-normal-layout {
+  //     &.sidebar-open {
+  //         overflow: hidden;
+  //     }
+  // }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 500;
+  margin: 0 0 1rem;
+  line-height: lh(40px, 29px);
+}
+
+h1 {
+  text-transform: uppercase;
+}
+
+img {
+  width: 100%;
+}
+
+.btn {
+  @include btn;
+
+  &-dark {
+    @include btn($type: dark);
+  }
+
+  &-light {
+    @include btn($type: light);
+  }
+}
+
+// links
+// a {
+//     color: $clr1;
+
+//     &.active {
+//         background-color: $clr1;
+//         color: $clr2;
+//     }
+// }
+
+// mark {
+//     color: $clr1;
+//     background-color: transparent;
+// }
+
+input:focus {
+  background-color: $color-beige-1200;
+  transition: background-color 1s;
+}
+
+.loader {
+  font-size: 2.5rem;
+  width: fit-content;
+  height: fit-content;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  animation: loader 0.5s alternate infinite linear;
+}
+
+@keyframes loader {
+  to {
+    opacity: 0.3;
+  }
+}

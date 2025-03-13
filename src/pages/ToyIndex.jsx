@@ -23,13 +23,13 @@ export function ToyIndex() {
   //TODO: implement searchParams. i'm stuck with it
   const [searchParams, setSearchParams] = useSearchParams();
 
-  useEffect(() => {
-    // dispatch({
-    //   type: SET_SORT_AND_FILTER,
-    //   sortBy: toyService.getSortFromSearchParams(searchParams),
-    //   filterBy: toyService.getFilterFromSearchParams(searchParams),
-    // });
-  }, []);
+  //   useEffect(() => {
+  //     dispatch({
+  //       type: SET_SORT_AND_FILTER,
+  //       sortBy: toyService.getSortFromSearchParams(searchParams),
+  //       filterBy: toyService.getFilterFromSearchParams(searchParams),
+  //     });
+  //   }, []);
 
   useEffect(() => {
     // setSearchParams({ ...filterBy, ...sortBy });
@@ -53,18 +53,19 @@ export function ToyIndex() {
   }
 
   return (
-    <section className="toy-index content">
+    <section className="toy-index">
       <SortBar
         sortBy={sortBy}
         onSetSortBy={onSetSortBy}
         onToggleFilter={toggleShowFilter}
       />
       {showFilter && (
-        <ToyFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
+        <ToyFilter
+          filterBy={filterBy}
+          onSetFilterBy={onSetFilterBy}
+          onClose={toggleShowFilter}
+        />
       )}
-      <Link className="btn" to={"/toy/edit"}>
-        Add Toy
-      </Link>
       <Outlet />
       <ToyList toys={toys} />
     </section>

@@ -3,7 +3,7 @@ import { ToyPreview } from "./ToyPreview";
 
 export function ToyList({ toys }) {
   return (
-    <ul className="toy-list">
+    <ul className="toy-list clean-list">
       {toys.map((toy) => (
         <li key={toy._id}>
           <ToyPreview toy={toy} />
@@ -14,7 +14,7 @@ export function ToyList({ toys }) {
             <Link className="btn" to={`/toy/${toy._id}`}>
               details
             </Link>
-            <button>remove</button>
+            <button className="btn">remove</button>
           </div>
         </li>
       ))}

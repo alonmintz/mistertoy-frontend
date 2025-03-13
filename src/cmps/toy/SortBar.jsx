@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { utilService } from "../../service/util.service";
+import { Link } from "react-router-dom";
 
 export function SortBar({ sortBy, onSetSortBy, onToggleFilter }) {
   const [sortByToEdit, setSortByToEdit] = useState(sortBy);
@@ -27,25 +28,34 @@ export function SortBar({ sortBy, onSetSortBy, onToggleFilter }) {
 
   return (
     <section className="content sort-bar">
-      <label htmlFor="sortBy">Sort: </label>
-      <select
-        name="sortBy"
-        id="sortBy"
-        onChange={handleSortChange}
-        value={key || ""}
-      >
-        <option value="name">Name</option>
-        <option value="price">Price</option>
-        <option value="createdAt">Creation</option>
-      </select>
-      <label htmlFor="reverse">reverse: </label>
-      <input
-        id="reverse"
-        type="checkbox"
-        checked={reverseValue === -1}
-        onChange={handleReverseChange}
-      />
+      <div className="sort">
+        <label htmlFor="sortBy">
+          <span>Sort By:</span>
+          <select
+            name="sortBy"
+            id="sortBy"
+            onChange={handleSortChange}
+            value={key || ""}
+          >
+            <option value="name">Name</option>
+            <option value="price">Price</option>
+            <option value="createdAt">Creation</option>
+          </select>
+        </label>
+        <label htmlFor="reverse">
+          <span>reverse:</span>
+          <input
+            id="reverse"
+            type="checkbox"
+            checked={reverseValue === -1}
+            onChange={handleReverseChange}
+          />
+        </label>
+      </div>
       <button onClick={onToggleFilter}>filter</button>
+      <Link className="btn" to={"/toy/edit"}>
+        Add Toy
+      </Link>
     </section>
   );
 }
