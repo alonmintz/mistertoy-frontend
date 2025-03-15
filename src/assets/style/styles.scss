@@ -9,10 +9,11 @@
 @import "base/layout";
 @import "base/backdrop";
 //COMPONENTS
+@import "cmps/modal";
 @import "cmps/app-header";
 @import "cmps/app-footer";
 @import "cmps/toy-index";
 @import "cmps/sort-bar";
 @import "cmps/toy-list";
 @import "cmps/toy-filter";
-@import "cmps/modal";
+@import "cmps/toy-edit"

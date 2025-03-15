@@ -1,0 +1,14 @@
+.toy-edit {
+  min-height: 50vh;
+  min-width: 50vw;
+  overflow-y: auto;
+
+  .toy-label {
+    padding: 0.5em;
+    width: fit-content;
+    border: solid $color-dark-grey-1000;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

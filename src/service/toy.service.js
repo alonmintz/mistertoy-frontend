@@ -71,12 +71,15 @@ function query(filterBy = {}, sortBy = {}) {
     return toys;
   });
 }
-
+//TODO: add catchs to all relevant function
 function get(toyId) {
-  return storageService.get(TOY_KEY, toyId).then((toy) => {
-    toy = _setNextPrevToyId(toy);
-    return toy;
-  });
+  return storageService
+    .get(TOY_KEY, toyId)
+    .then((toy) => {
+      toy = _setNextPrevToyId(toy);
+      return toy;
+    })
+    .catch((err) => console.log(err));
 }
 
 function remove(toyId) {
@@ -84,10 +87,10 @@ function remove(toyId) {
 }
 
 function save(toy) {
-  if (toy.id) {
+  if (toy._id) {
     return storageService.put(TOY_KEY, toy);
   } else {
-    return storageService.post(TOY_KEY, toy);
+    return storageService.post(TOY_KEY, { ...toy, createdAt: Date.now() });
   }
 }
 
@@ -105,7 +108,13 @@ function getDefaultSort() {
 function getFilterFromSearchParams(searchParams) {
   const defaultFilter = getDefaultFilter();
   const filterBy = {};
+  //TODO: fix labels bug
   for (const field in defaultFilter) {
+    // if (field === "labels") {
+    //   filterBy[field] = [];
+    // } else {
+    //   filterBy[field] = searchParams.get(field) || "";
+    // }
     filterBy[field] = searchParams.get(field) || "";
   }
   return filterBy;
@@ -151,17 +160,17 @@ function _createToys() {
 
 function _createToy(vendor, maxSpeed = 250) {
   const toy = getEmptyToy(vendor, maxSpeed);
-  toy.id = utilService.makeId();
+  toy._id = utilService.makeId();
   return toy;
 }
 
 function _setNextPrevToyId(toy) {
   return storageService.query(TOY_KEY).then((toys) => {
-    const toyIdx = toys.findIndex((currToy) => currToy.id === toy.id);
+    const toyIdx = toys.findIndex((currToy) => currToy._id === toy._id);
     const nextToy = toys[toyIdx + 1] ? toys[toyIdx + 1] : toys[0];
     const prevToy = toys[toyIdx - 1] ? toys[toyIdx - 1] : toys[toys.length - 1];
-    toy.nextToyId = nextToy.id;
-    toy.prevToyId = prevToy.id;
+    toy.nextToyId = nextToy._id;
+    toy.prevToyId = prevToy._id;
     return toy;
   });
 }
