@@ -23,7 +23,7 @@
 .toy-filter {
   position: fixed;
   height: 100vh;
-  width: 30%;
+  width: minmax(30%, 80%);
   right: 0;
   padding: em(16px) em(24px);
   background-color: $color-grey-1200;

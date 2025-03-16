@@ -1,0 +1,12 @@
+.toy-details {
+  display: grid;
+  grid-template-rows: repeat(auto-fill, auto);
+  align-content: start;
+  padding: 1em;
+  .toy-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1em;
+    min-height: em(600px);
+  }
+}

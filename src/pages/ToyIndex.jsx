@@ -3,7 +3,7 @@ import { ToyFilter } from "../cmps/toy/ToyFilter";
 import { ToyList } from "../cmps/toy/ToyList";
 import { useEffect, useState } from "react";
 import { toyActions } from "../store/actions/toy.actions";
-import { showErrorMsg } from "../service/event-bus.service";
+import { showErrorMsg, showSuccessMsg } from "../service/event-bus.service";
 import { Link, Outlet, useSearchParams } from "react-router-dom";
 import { SortBar } from "../cmps/toy/SortBar";
 import {
@@ -12,12 +12,15 @@ import {
   SET_SORT_BY,
 } from "../store/reducers/toy.reducer";
 import { toyService } from "../service/toy.service";
+import { ConfirmAction } from "../cmps/general/ConfirnAction";
 
 export function ToyIndex() {
   const toys = useSelector((storeState) => storeState.toyModule.toys);
   const filterBy = useSelector((storeState) => storeState.toyModule.filterBy);
   const sortBy = useSelector((storeState) => storeState.toyModule.sortBy);
   const [showFilter, setShowFilter] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [toyToRemove, setToyToRemove] = useState(null);
 
   const dispatch = useDispatch();
   //TODO: implement searchParams. i'm stuck with it
@@ -52,6 +55,29 @@ export function ToyIndex() {
     dispatch({ type: SET_FILTER_BY, filterBy: updatedFilterBy });
   }
 
+  function onRemoveButtonClick(toy) {
+    setToyToRemove(toy);
+    toggleIsConfirmOpen();
+  }
+
+  function onRemoveToy(toy) {
+    toyActions
+      .removeToy(toy._id)
+      .then(toggleIsConfirmOpen)
+      .then(() => {
+        setToyToRemove(null);
+        showSuccessMsg("Toy Removed");
+      })
+      .catch((err) => {
+        console.log({ err });
+        showErrorMsg(`Error Removing Toy (id: ${toy._id})`);
+      });
+  }
+
+  function toggleIsConfirmOpen() {
+    setIsConfirmOpen((prevIsOpen) => !prevIsOpen);
+  }
+
   return (
     <section className="toy-index">
       <SortBar
@@ -67,7 +93,14 @@ export function ToyIndex() {
         />
       )}
       <Outlet />
-      <ToyList toys={toys} />
+      <ToyList toys={toys} onRemoveToy={onRemoveButtonClick} />
+      {isConfirmOpen && (
+        <ConfirmAction
+          action="remove"
+          onConfirm={() => onRemoveToy(toyToRemove)}
+          onCancel={toggleIsConfirmOpen}
+        />
+      )}
     </section>
   );
 }
