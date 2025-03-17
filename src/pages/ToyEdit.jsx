@@ -6,16 +6,16 @@ import { showErrorMsg, showSuccessMsg } from "../service/event-bus.service";
 import { toyActions } from "../store/actions/toy.actions";
 
 export function ToyEdit() {
-  const [toyToEdit, setToyToEdit] = useState(toyService.getEmptyToy);
+  const [toyToEdit, setToyToEdit] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const params = useParams();
 
-  const { name, labels, price, inStock } = toyToEdit;
-
   useEffect(() => {
     if (params.toyId) {
       loadToy();
+    } else {
+      setToyToEdit(toyService.getEmptyToy());
     }
   }, []);
 
@@ -81,6 +81,17 @@ export function ToyEdit() {
         console.log("err:", err);
       });
   }
+
+  if (!toyToEdit)
+    return (
+      <Modal onClose={() => navigate("/toy")}>
+        <section className="toy-edit">
+          <section className="loader"> Loading...</section>
+        </section>
+      </Modal>
+    );
+
+  const { name, labels, price, inStock } = toyToEdit;
 
   return (
     <Modal onClose={() => navigate("/toy")}>

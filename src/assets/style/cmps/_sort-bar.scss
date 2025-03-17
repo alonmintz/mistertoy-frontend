@@ -1,23 +1,23 @@
 .sort-bar {
   display: grid;
   grid-auto-flow: column;
-  // justify-content: space-around;
   align-items: center;
   padding: 1em;
   .sort {
-    padding: 1em;
-    border: solid 1px $color-dark-grey-1000;
+    justify-self: start;
+    padding: 1em 1.5em;
+    color: $color-grey-1000;
+    background-color: $color-red-1000;
+    text-transform: uppercase;
     border-radius: 1em;
-    justify-self: center;
     label {
-      padding: 1em;
       span {
         margin-inline-end: 0.5em;
       }
     }
   }
   button {
-    @include btn($type: light);
+    @include btn();
     justify-self: center;
     width: fit-content;
     height: fit-content;

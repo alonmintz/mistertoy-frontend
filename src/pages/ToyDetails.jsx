@@ -1,16 +1,45 @@
 import { useEffect, useState } from "react";
-import mockImg from "../assets/img/mock-img.jpg";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toyService } from "../service/toy.service";
 import { showErrorMsg } from "../service/event-bus.service";
+import { Popup } from "../cmps/general/Popup";
+import { Chat } from "../cmps/general/Chat";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment } from "@fortawesome/free-solid-svg-icons";
+import { ToyList } from "../cmps/toy/ToyList";
+
 export function ToyDetails() {
   const [toy, setToy] = useState(null);
+  const [relatedToys, setRelatedToys] = useState(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const params = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     loadToy();
   }, [params.toyId]);
+
+  useEffect(() => {
+    if (toy) loadRelatedToys();
+  }, [toy]);
+
+  useEffect(() => {
+    console.log({ relatedToys });
+  }, [relatedToys]);
+
+  useEffect(() => {
+    function handleEscapeKey(event) {
+      if (event.key === "Escape") {
+        setIsPopupOpen(false);
+      }
+    }
+
+    window.addEventListener("keydown", handleEscapeKey);
+
+    return () => {
+      window.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, []);
 
   function loadToy() {
     toyService
@@ -21,6 +50,14 @@ export function ToyDetails() {
         showErrorMsg("Error loading toy");
         navigate("/toy");
       });
+  }
+
+  function loadRelatedToys() {
+    toyService.getRelatedToysByLabels(toy.labels, toy._id).then(setRelatedToys);
+  }
+
+  function toggleIsPopupOpen() {
+    setIsPopupOpen((prev) => !prev);
   }
 
   if (!toy) return <section className="loader"> Loading...</section>;
@@ -39,7 +76,7 @@ export function ToyDetails() {
       </nav>
       <section className="toy-container">
         <article className="img-container">
-          <img src={mockImg} alt="toy-img" />
+          <img src={imgUrl} alt="toy-img" />
           {!inStock && <h2>Sold Out</h2>}
         </article>
         <article className="details">
@@ -53,7 +90,31 @@ export function ToyDetails() {
           <button className="btn">Add To Cart</button>
         </article>
       </section>
-      <h2>You May Also Like:</h2>
+      {relatedToys && (
+        <section className="related-toys-container">
+          <h2>You May Also Like...</h2>
+          {relatedToys.map((toysByLabelObj) => {
+            const { label, toys } = toysByLabelObj;
+            return (
+              <section className="related-toys-by-label">
+                <h4>{label}:</h4>
+                <ToyList toys={toys} />
+              </section>
+            );
+          })}
+        </section>
+      )}
+      <button className="btn chat-btn" onClick={toggleIsPopupOpen}>
+        <FontAwesomeIcon icon={faComment} />
+      </button>
+      {isPopupOpen && (
+        <Popup
+          header={<span>Need Help?</span>}
+          footer={<span>Press Esc to close chat</span>}
+        >
+          <Chat />
+        </Popup>
+      )}
     </section>
   );
 }

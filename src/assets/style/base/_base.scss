@@ -47,6 +47,9 @@ img {
   &-light {
     @include btn($type: light);
   }
+  &-icon {
+    @include btn($type: icon);
+  }
 }
 
 // links
@@ -65,7 +68,7 @@ img {
 // }
 
 input:focus {
-  background-color: $color-beige-1200;
+  background-color: $color-grey-1100;
   transition: background-color 1s;
 }
 

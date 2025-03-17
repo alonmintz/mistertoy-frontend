@@ -5,12 +5,48 @@
 
   li {
     position: relative;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    justify-items: center;
+    gap: 0.5em;
     padding: em(16px) em(24px);
-    border: solid $color-dark-grey-1000;
+    border: solid 1px $color-dark-grey-1000;
+    border-radius: 1em;
 
     &:hover {
       box-shadow: $box-shadow-dark-grey;
       transform: scale(1.001);
+    }
+    a {
+      &.preview-link {
+        color: $color-dark-grey-1000;
+        text-decoration: none;
+        &:hover {
+          h2 {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+    .toy-preview {
+      height: 100%;
+      width: 100%;
+      display: grid;
+      grid-template-rows: 1fr auto auto;
+      justify-items: center;
+      align-items: center;
+      .img {
+        max-width: 100%;
+        height: auto;
+        object-fit: contain;
+        display: block;
+      }
+    }
+    .btn-container {
+      width: 100%;
+      display: grid;
+      grid-auto-flow: column;
+      justify-content: space-between;
     }
   }
 }

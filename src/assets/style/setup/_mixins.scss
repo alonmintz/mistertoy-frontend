@@ -83,6 +83,7 @@
   font-size: em(14px);
   font-variation-settings: "wght" 430;
   border: none;
+  border-radius: 1em;
   cursor: pointer;
 
   transition: background-color 0.2s;
@@ -107,6 +108,9 @@
       background-color: $color-red-1100;
       color: $color-grey-1000;
     }
+  } @else if $type == icon {
+    border-radius: 100%;
+    padding: 1em;
   }
 }
 
@@ -136,4 +140,19 @@
   img {
     padding: $padding;
   }
+}
+
+@mixin popup {
+  position: fixed;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 0.2em;
+  height: 50vh;
+  width: 25vw;
+  padding: 1em;
+  background-color: $color-beige-1000;
+  border: solid 1px $color-dark-grey-1200;
+  border-radius: 1em;
+  box-shadow: $box-shadow-dark-grey;
+  z-index: 1000;
 }

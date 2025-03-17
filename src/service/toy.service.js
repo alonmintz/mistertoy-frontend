@@ -27,49 +27,58 @@ export const toyService = {
   getSortFromSearchParams,
   getSpeedStats,
   getVendorStats,
+  askChatBot,
+  getRelatedToysByLabels,
 };
 // For Debug (easy access from console):
 window.cs = toyService;
 
 function query(filterBy = {}, sortBy = {}) {
-  return storageService.query(TOY_KEY).then((toys) => {
-    if (filterBy.txt) {
-      const regExp = new RegExp(filterBy.txt, "i");
-      toys = toys.filter((toy) => regExp.test(toy.name));
-    }
+  return storageService
+    .query(TOY_KEY)
+    .then((toys) => {
+      if (filterBy.txt) {
+        const regExp = new RegExp(filterBy.txt, "i");
+        toys = toys.filter((toy) => regExp.test(toy.name));
+      }
 
-    if (filterBy.inStock) {
-      toys = toys.filter((toy) => toy.inStock === JSON.parse(filterBy.inStock));
-    }
+      if (filterBy.inStock) {
+        toys = toys.filter(
+          (toy) => toy.inStock === JSON.parse(filterBy.inStock)
+        );
+      }
 
-    if (filterBy.labels && filterBy.labels.length > 0) {
-      toys = toys.filter((toy) => {
-        const labels = toy.labels;
-        if (!labels || !labels.length) return false;
-        return labels.some((label) => filterBy.labels.includes(label));
-      });
-    }
+      if (filterBy.labels && filterBy.labels.length > 0) {
+        toys = toys.filter((toy) => {
+          const labels = toy.labels;
+          if (!labels || !labels.length) return false;
+          return labels.some((label) => filterBy.labels.includes(label));
+        });
+      }
 
-    if (sortBy.name !== undefined) {
-      toys = toys.sort(
-        (toy1, toy2) => toy1.name.localeCompare(toy2.name) * sortBy.name
-      );
-    }
+      if (sortBy.name !== undefined) {
+        toys = toys.sort(
+          (toy1, toy2) => toy1.name.localeCompare(toy2.name) * sortBy.name
+        );
+      }
 
-    if (sortBy.price !== undefined) {
-      toys = toys.sort(
-        (toy1, toy2) => (toy1.price - toy2.price) * sortBy.price
-      );
-    }
+      if (sortBy.price !== undefined) {
+        toys = toys.sort(
+          (toy1, toy2) => (toy1.price - toy2.price) * sortBy.price
+        );
+      }
 
-    if (sortBy.createdAt !== undefined) {
-      toys = toys.sort(
-        (toy1, toy2) => (toy1.createdAt - toy2.createdAt) * sortBy.createdAt
-      );
-    }
+      if (sortBy.createdAt !== undefined) {
+        toys = toys.sort(
+          (toy1, toy2) => (toy1.createdAt - toy2.createdAt) * sortBy.createdAt
+        );
+      }
 
-    return toys;
-  });
+      return toys;
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
 }
 //TODO: add catchs to all relevant function
 function get(toyId) {
@@ -79,18 +88,28 @@ function get(toyId) {
       toy = _setNextPrevToyId(toy);
       return toy;
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      throw new Error(err);
+    });
 }
 
 function remove(toyId) {
-  return storageService.remove(TOY_KEY, toyId);
+  return storageService.remove(TOY_KEY, toyId).catch((err) => {
+    throw new Error(err);
+  });
 }
 
 function save(toy) {
   if (toy._id) {
-    return storageService.put(TOY_KEY, toy);
+    return storageService.put(TOY_KEY, toy).catch((err) => {
+      throw new Error(err);
+    });
   } else {
-    return storageService.post(TOY_KEY, { ...toy, createdAt: Date.now() });
+    return storageService
+      .post(TOY_KEY, { ...toy, createdAt: Date.now() })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
 }
 
@@ -148,6 +167,37 @@ function getVendorStats() {
       value: Math.round((toyCountByVendorMap[vendor] / toys.length) * 100),
     }));
     return data;
+  });
+}
+
+function askChatBot(msg) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ author: "bot", txt: "This is an automatic response 🤖" });
+    }, 1000);
+  });
+}
+
+function getRelatedToysByLabels(toyLabels, currentToyId, count = 3) {
+  return query().then((toys) => {
+    let toysByLabel = [];
+    toyLabels.forEach((label) => {
+      const filteredToys = toys
+        .filter((toy) => toy.labels.includes(label))
+        .filter((toy) => toy._id !== currentToyId);
+      toysByLabel = [
+        ...toysByLabel,
+        {
+          label,
+          toys:
+            filteredToys.length > count
+              ? filteredToys.slice(0, count - 1)
+              : filteredToys,
+        },
+      ];
+    });
+
+    return toysByLabel;
   });
 }
 
