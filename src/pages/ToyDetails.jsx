@@ -108,7 +108,7 @@ export function ToyDetails() {
           {relatedToys.map((toysByLabelObj) => {
             const { label, toys } = toysByLabelObj;
             return (
-              <section className="related-toys-by-label">
+              <section key={label} className="related-toys-by-label">
                 <h4>{label}</h4>
                 <ToyList toys={toys} />
               </section>

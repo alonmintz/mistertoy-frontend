@@ -22,11 +22,13 @@
 
 .toy-filter {
   position: fixed;
-  height: 100vh;
+  height: 80vh;
   width: minmax(30%, 80%);
   right: 0;
+  top: 15vh;
   padding: em(16px) em(24px);
   background-color: $color-grey-1200;
+  border-radius: 1em 0 0 1em;
   z-index: 1000;
   animation: roll-in 0.3s ease forwards;
   //TODO: fix roll-out

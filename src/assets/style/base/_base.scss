@@ -9,13 +9,9 @@ html {
 
 body {
   margin: 0;
-  background-color: $color-grey-1200;
-
-  //   @include for-normal-layout {
-  //     &.sidebar-open {
-  //         overflow: hidden;
-  //     }
-  // }
+  // background-image: image("../../img/home.jpeg");
+  // background-size: cover;
+  // background-position: center;
 }
 
 h1,

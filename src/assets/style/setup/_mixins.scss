@@ -108,7 +108,8 @@
       background-color: $color-red-1100;
       color: $color-grey-1000;
     }
-  } @else if $type == icon {
+  }
+  @if $type == icon {
     border-radius: 100%;
     padding: 1em;
   }

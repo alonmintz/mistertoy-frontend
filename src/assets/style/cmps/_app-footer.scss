@@ -1,3 +1,11 @@
 footer.app-footer {
-  background-color: $color-light-red-1100;
+  background-color: $color-red-1000;
+  height: 15vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  nav {
+    display: flex;
+    gap: 1em;
+  }
 }

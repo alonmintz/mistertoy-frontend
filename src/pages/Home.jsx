@@ -1,3 +1,16 @@
+import { useNavigate } from "react-router-dom";
+import home from "../assets/img/home.jpeg";
+
 export function Home() {
-  return <section className="home">home</section>;
+  const navigate = useNavigate();
+  return (
+    <section className="home full">
+      <img
+        src={home}
+        alt="home"
+        onClick={() => navigate("/toy")}
+        style={{ cursor: "pointer" }}
+      />
+    </section>
+  );
 }

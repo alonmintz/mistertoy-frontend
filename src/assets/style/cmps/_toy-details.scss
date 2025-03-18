@@ -87,6 +87,7 @@
     right: 2rem;
     bottom: 2rem;
     width: fit-content;
+    border: solid 1px $color-dark-grey-1000;
   }
   .popup {
     @include popup();
