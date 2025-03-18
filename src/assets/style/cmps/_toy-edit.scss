@@ -1,6 +1,7 @@
 .toy-edit {
   position: relative;
-  min-height: 50vh;
+  height: fit-content;
+  min-height: 25vh;
   min-width: 50vw;
   overflow-y: auto;
   h2 {
