@@ -69,9 +69,11 @@
   .related-toys-container {
     h2 {
       text-decoration: underline;
+      margin: 0;
     }
     .related-toys-by-label {
       & > h4 {
+        margin-block: 0.5em;
         padding: 0.5em;
         width: fit-content;
         background-color: $color-beige-1200;
@@ -90,7 +92,6 @@
     @include popup();
     right: 2rem;
     bottom: 6rem;
-
     header {
       align-self: start;
       text-align: center;

@@ -148,7 +148,7 @@
   grid-template-rows: auto 1fr auto;
   gap: 0.2em;
   height: 50vh;
-  width: 25vw;
+  min-width: 25vw;
   padding: 1em;
   background-color: $color-beige-1000;
   border: solid 1px $color-dark-grey-1200;
