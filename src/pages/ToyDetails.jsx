@@ -5,7 +5,12 @@ import { showErrorMsg } from "../service/event-bus.service";
 import { Popup } from "../cmps/general/Popup";
 import { Chat } from "../cmps/general/Chat";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment } from "@fortawesome/free-solid-svg-icons";
+import {
+  faComment,
+  faArrowRight,
+  faArrowLeft,
+  faGrip,
+} from "@fortawesome/free-solid-svg-icons";
 import { ToyList } from "../cmps/toy/ToyList";
 
 export function ToyDetails() {
@@ -22,10 +27,6 @@ export function ToyDetails() {
   useEffect(() => {
     if (toy) loadRelatedToys();
   }, [toy]);
-
-  useEffect(() => {
-    console.log({ relatedToys });
-  }, [relatedToys]);
 
   useEffect(() => {
     function handleEscapeKey(event) {
@@ -62,17 +63,21 @@ export function ToyDetails() {
 
   if (!toy) return <section className="loader"> Loading...</section>;
   const { name, labels, price, imgUrl, inStock } = toy;
-  //TODO: add "you may also like" section by labels
   //TODO: add cart functionality
   return (
     <section className="toy-details">
-      <nav className="toy-nav">
-        <Link className="btn" to={`/toy/${toy.prevToyId}`}>
-          previous toy
+      <nav>
+        <Link className="btn btn-icon" to={`/toy`}>
+          <FontAwesomeIcon icon={faGrip} />{" "}
         </Link>
-        <Link className="btn" to={`/toy/${toy.nextToyId}`}>
-          next toy
-        </Link>
+        <div className="toy-nav">
+          <Link className="btn btn-icon" to={`/toy/${toy.prevToyId}`}>
+            <FontAwesomeIcon icon={faArrowLeft} />
+          </Link>
+          <Link className="btn btn-icon" to={`/toy/${toy.nextToyId}`}>
+            <FontAwesomeIcon icon={faArrowRight} />
+          </Link>
+        </div>
       </nav>
       <section className="toy-container">
         <article className="img-container">
@@ -87,17 +92,24 @@ export function ToyDetails() {
               <li key={label}>{label}</li>
             ))}
           </ul>
+          <h4>Description:</h4>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore id
+            consequuntur fuga officiis, libero doloremque iure. Fugit inventore
+            deleniti quas reiciendis? Numquam quos eius inventore iste ipsum
+            architecto minus saepe.
+          </p>
           <button className="btn">Add To Cart</button>
         </article>
       </section>
       {relatedToys && (
         <section className="related-toys-container">
-          <h2>You May Also Like...</h2>
+          <h2>You May Also Like:</h2>
           {relatedToys.map((toysByLabelObj) => {
             const { label, toys } = toysByLabelObj;
             return (
               <section className="related-toys-by-label">
-                <h4>{label}:</h4>
+                <h4>{label}</h4>
                 <ToyList toys={toys} />
               </section>
             );

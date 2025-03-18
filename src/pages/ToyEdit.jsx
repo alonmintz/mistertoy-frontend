@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { TOY_LABELS, toyService } from "../service/toy.service";
 import { showErrorMsg, showSuccessMsg } from "../service/event-bus.service";
 import { toyActions } from "../store/actions/toy.actions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 
 export function ToyEdit() {
   const [toyToEdit, setToyToEdit] = useState(null);
@@ -91,63 +93,80 @@ export function ToyEdit() {
       </Modal>
     );
 
-  const { name, labels, price, inStock } = toyToEdit;
+  const { name, labels, price, inStock, imgUrl } = toyToEdit;
 
   return (
     <Modal onClose={() => navigate("/toy")}>
       <section className="toy-edit">
         <h2>{toyToEdit._id ? "Edit" : "Add"} Toy</h2>
         <form onSubmit={onSubmit}>
-          <label htmlFor="name">
-            <span>Name: </span>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              value={name}
-              disabled={isLoading}
-              onChange={handleChange}
-              required
-            />
-          </label>
-          <h4>Labels:</h4>
-          <ul className="clean-list">
-            {TOY_LABELS.map((label) => (
-              <li key={label}>
-                <ToyLabel
-                  toy={toyToEdit}
-                  label={label}
-                  onLabelClick={handleLabelClick}
+          <div className="container">
+            <div className="edit-inputs">
+              <label htmlFor="name">
+                <span>Name: </span>
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  value={name}
+                  disabled={isLoading}
+                  onChange={handleChange}
+                  required
                 />
-              </li>
-            ))}
-          </ul>
-          <label htmlFor="price">
-            <span>Price: </span>
-            <input
-              type="number"
-              name="price"
-              id="price"
-              value={price}
-              min={0}
-              disabled={isLoading}
-              onChange={handleChange}
-              required
-            />
-          </label>
-          <label htmlFor="inStock">
-            <span>In Stock: </span>
-            <input
-              type="checkbox"
-              name="inStock"
-              id="inStock"
-              value={inStock}
-              checked={inStock}
-              disabled={isLoading}
-              onChange={handleChange}
-            />
-          </label>
-          <button>Save</button>
+              </label>
+              <label htmlFor="imgUrl">
+                <span>Image URL: </span>
+                <input
+                  type="text"
+                  name="imgUrl"
+                  id="imgUrl"
+                  value={imgUrl}
+                  disabled={isLoading}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <label htmlFor="price">
+                <span>Price: </span>
+                <input
+                  type="number"
+                  name="price"
+                  id="price"
+                  value={price}
+                  min={0}
+                  disabled={isLoading}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <label htmlFor="inStock">
+                <span>In Stock: </span>
+                <input
+                  type="checkbox"
+                  name="inStock"
+                  id="inStock"
+                  value={inStock}
+                  checked={inStock}
+                  disabled={isLoading}
+                  onChange={handleChange}
+                />
+              </label>
+            </div>
+            {/* <h4>Labels:</h4> */}
+            <ul className="labels-list clean-list">
+              {TOY_LABELS.map((label) => (
+                <li key={label}>
+                  <ToyLabel
+                    toy={toyToEdit}
+                    label={label}
+                    onLabelClick={handleLabelClick}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <button className="btn">Save</button>
         </form>
       </section>
     </Modal>
@@ -155,14 +174,20 @@ export function ToyEdit() {
 }
 
 function ToyLabel({ toy, label, onLabelClick }) {
-  function checkToyLabels() {
-    return toy.labels.includes(label);
-  }
+  const isIncluded = toy.labels.includes(label);
 
   return (
-    <section className="toy-label" onClick={() => onLabelClick(label)}>
+    <section
+      className={`toy-label ${isIncluded ? "included" : ""}`}
+      onClick={() => onLabelClick(label)}
+    >
       <span>
-        {label} {checkToyLabels() ? "X" : "+"}
+        {label}{" "}
+        {isIncluded ? (
+          <FontAwesomeIcon icon={faMinus} />
+        ) : (
+          <FontAwesomeIcon icon={faPlus} />
+        )}
       </span>
     </section>
   );

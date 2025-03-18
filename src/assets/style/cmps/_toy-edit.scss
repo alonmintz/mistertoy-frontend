@@ -1,14 +1,64 @@
 .toy-edit {
+  position: relative;
   min-height: 50vh;
   min-width: 50vw;
   overflow-y: auto;
-
-  .toy-label {
-    padding: 0.5em;
-    width: fit-content;
-    border: solid $color-dark-grey-1000;
-    &:hover {
-      cursor: pointer;
+  // padding: 1em;
+  h2 {
+    text-align: center;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    .container {
+      height: 100%;
+      width: 100%;
+      display: grid;
+      grid-auto-flow: column;
+      grid-template-columns: 1fr 1fr;
+      gap: 1em;
+      @media (max-width: 600px) {
+        display: flex;
+        flex-direction: column;
+      }
+      .edit-inputs {
+        display: grid;
+        justify-items: start;
+        label {
+          width: 100%;
+          input[type="text"],
+          input[type="number"] {
+            width: 100%;
+          }
+        }
+        // gap: 1em;
+      }
+      .labels-list {
+        justify-self: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1em;
+        .toy-label {
+          padding: 0.5em;
+          width: fit-content;
+          background-color: $color-beige-1200;
+          border-radius: 1em;
+          transition: background-color 0.3s ease;
+          &:hover {
+            cursor: pointer;
+            background-color: $color-light-red-1200;
+          }
+          &.included {
+            color: $color-grey-1000;
+            background-color: $color-red-1000;
+          }
+        }
+      }
+    }
+    .btn {
+      align-self: center;
+      width: fit-content;
     }
   }
 }

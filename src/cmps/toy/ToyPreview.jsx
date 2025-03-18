@@ -4,9 +4,13 @@ export function ToyPreview({ toy }) {
     <article className="toy-preview">
       <img src={imgUrl} alt="toy image" />
       <h2>{name}</h2>
-      <div>
+      <div className="details">
         <span>{`Price: ${price}$ `}</span>
-        {inStock ? <span>in stock 😎</span> : <span>not in stock 😥</span>}
+        {inStock ? (
+          <span>in stock 😎</span>
+        ) : (
+          <span className="out">not in stock 😥</span>
+        )}
       </div>
     </article>
   );

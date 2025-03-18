@@ -1,16 +1,86 @@
 .toy-details {
   position: relative;
   display: grid;
-  grid-template-rows: repeat(auto-fill, auto);
   align-content: start;
   padding: 1em;
+  nav {
+    display: flex;
+    justify-content: space-between;
+    .toy-nav {
+      display: flex;
+      gap: 1em;
+    }
+  }
   .toy-container {
+    // border: solid 5px yellow;
+    height: 60vh;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1em;
-    // min-height: em(600px);
+    height: 70vh;
+    .img-container {
+      position: relative;
+      // border: solid 5px black;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        height: auto;
+        width: auto;
+        max-height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+      }
+      h2 {
+        position: absolute;
+        top: 50%;
+        padding: 0.5em;
+        background-color: $color-red-1000;
+        color: $color-grey-1000;
+        border-radius: 1em;
+        font-weight: 800;
+        text-transform: uppercase;
+        text-align: center;
+        transform: rotate(330deg);
+      }
+    }
+    .details {
+      // border: solid 5px red;
+      padding: 1em;
+      h2 {
+        text-decoration: underline;
+      }
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1em;
+        margin-block-end: 1em;
+        li {
+          padding: 0.5em;
+          width: fit-content;
+          background-color: $color-beige-1200;
+          border-radius: 1em;
+        }
+      }
+    }
+  }
+  .related-toys-container {
+    h2 {
+      text-decoration: underline;
+    }
+    .related-toys-by-label {
+      & > h4 {
+        padding: 0.5em;
+        width: fit-content;
+        background-color: $color-beige-1200;
+        border-radius: 1em;
+      }
+    }
   }
   .chat-btn {
+    @include btn($type: icon);
     position: fixed;
     right: 2rem;
     bottom: 2rem;
