@@ -9,7 +9,7 @@ export function Home() {
         src={home}
         alt="home"
         onClick={() => navigate("/toy")}
-        style={{ cursor: "pointer" }}
+        style={{ height: "90vh", objectFit: "cover", cursor: "pointer" }}
       />
     </section>
   );

@@ -8,9 +8,6 @@
 
   > *:not(.full) {
     grid-column: 2;
-    // display: grid;
-    // grid-auto-flow: dense;
-    // grid-template-columns: repeat(6, 1fr);
   }
 
   @include for-narrow-layout {

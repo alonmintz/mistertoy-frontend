@@ -25,8 +25,6 @@ export const toyService = {
   getDefaultSort,
   getFilterFromSearchParams,
   getSortFromSearchParams,
-  getSpeedStats,
-  getVendorStats,
   askChatBot,
   getRelatedToysByLabels,
 };
@@ -127,15 +125,14 @@ function getDefaultSort() {
 function getFilterFromSearchParams(searchParams) {
   const defaultFilter = getDefaultFilter();
   const filterBy = {};
-  //TODO: fix labels bug
   for (const field in defaultFilter) {
-    // if (field === "labels") {
-    //   filterBy[field] = [];
-    // } else {
-    //   filterBy[field] = searchParams.get(field) || "";
-    // }
-    filterBy[field] = searchParams.get(field) || "";
+    if (field === "labels") {
+      filterBy[field] = searchParams.getAll(field) || "";
+    } else {
+      filterBy[field] = searchParams.get(field) || "";
+    }
   }
+
   return filterBy;
 }
 
@@ -146,28 +143,6 @@ function getSortFromSearchParams(searchParams) {
     sortBy[field] = searchParams.get(field) || 1;
   }
   return sortBy;
-}
-//TODO: change to relevant stats
-function getSpeedStats() {
-  return storageService.query(TOY_KEY).then((toys) => {
-    const toyCountBySpeedMap = _getToyCountBySpeedMap(toys);
-    const data = Object.keys(toyCountBySpeedMap).map((speedName) => ({
-      title: speedName,
-      value: toyCountBySpeedMap[speedName],
-    }));
-    return data;
-  });
-}
-//TODO: change to relevant stats
-function getVendorStats() {
-  return storageService.query(TOY_KEY).then((toys) => {
-    const toyCountByVendorMap = _getToyCountByVendorMap(toys);
-    const data = Object.keys(toyCountByVendorMap).map((vendor) => ({
-      title: vendor,
-      value: Math.round((toyCountByVendorMap[vendor] / toys.length) * 100),
-    }));
-    return data;
-  });
 }
 
 function askChatBot(msg) {
@@ -223,26 +198,4 @@ function _setNextPrevToyId(toy) {
     toy.prevToyId = prevToy._id;
     return toy;
   });
-}
-
-function _getToyCountBySpeedMap(toys) {
-  const toyCountBySpeedMap = toys.reduce(
-    (map, toy) => {
-      if (toy.maxSpeed < 120) map.slow++;
-      else if (toy.maxSpeed < 200) map.normal++;
-      else map.fast++;
-      return map;
-    },
-    { slow: 0, normal: 0, fast: 0 }
-  );
-  return toyCountBySpeedMap;
-}
-
-function _getToyCountByVendorMap(toys) {
-  const toyCountByVendorMap = toys.reduce((map, toy) => {
-    if (!map[toy.vendor]) map[toy.vendor] = 0;
-    map[toy.vendor]++;
-    return map;
-  }, {});
-  return toyCountByVendorMap;
 }

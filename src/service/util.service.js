@@ -102,13 +102,17 @@ function debounce(callback, wait) {
   };
 }
 
-function getTruthyValues(obj) {
-  const newObj = {};
-  for (const key in obj) {
-    const value = obj[key];
-    if (value) {
-      newObj[key] = value;
+function getTruthyValues(...objects) {
+  const truthyObj = {};
+
+  for (const obj of objects) {
+    for (const key in obj) {
+      const val = obj[key];
+      if (val || typeof val === "boolean") {
+        truthyObj[key] = val;
+      }
     }
   }
-  return newObj;
+
+  return truthyObj;
 }

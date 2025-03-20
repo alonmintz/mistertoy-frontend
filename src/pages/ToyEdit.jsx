@@ -54,7 +54,6 @@ export function ToyEdit() {
   }
 
   function handleLabelClick(label) {
-    console.log(`${label} clicked`);
     if (labels.includes(label)) {
       setToyToEdit((prevToyToEdit) => ({
         ...prevToyToEdit,
@@ -68,9 +67,8 @@ export function ToyEdit() {
     }
   }
 
-  function onSubmit(ev) {
+  async function onSubmit(ev) {
     ev.preventDefault();
-    console.log({ toyToEdit });
 
     toyActions
       .saveToy(toyToEdit)

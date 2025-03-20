@@ -6,20 +6,11 @@ import { Backdrop } from "../general/Backdrop";
 export function ToyFilter({ filterBy, onSetFilterBy, onClose }) {
   const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy });
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
-  // const [isClosing, setIsClosing] = useState(false);
   const debounceOnSetFilterBy = useRef(
     utilService.debounce(onSetFilterBy, 500)
   ).current;
 
-  // useEffect(() => {
-  //   console.log({ isClosing });
-
-  //   return setIsClosing(true);
-  // }, []);
-
   useEffect(() => {
-    console.log({ filterByToEdit });
-
     debounceOnSetFilterBy(filterByToEdit);
   }, [filterByToEdit]);
 
@@ -48,7 +39,6 @@ export function ToyFilter({ filterBy, onSetFilterBy, onClose }) {
   }
 
   function handleCheckboxChange(label) {
-    console.log({ label });
     setFilterByToEdit((prevFilter) =>
       prevFilter.labels.includes(label)
         ? {
@@ -64,16 +54,10 @@ export function ToyFilter({ filterBy, onSetFilterBy, onClose }) {
   }
 
   const { txt, labels, inStock } = filterByToEdit;
-  // const closingClass = isClosing ? "" : "closing";
-  // console.log({ closingClass });
 
   return (
     <Backdrop onClick={onClose}>
-      <section
-        // className={`toy-filter ${closingClass}`}
-        className={`toy-filter`}
-        onClick={(ev) => ev.stopPropagation()}
-      >
+      <section className={`toy-filter`} onClick={(ev) => ev.stopPropagation()}>
         <h2>Filter</h2>
         <form>
           <div className="filter-item">

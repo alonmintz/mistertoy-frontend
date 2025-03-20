@@ -16,7 +16,10 @@ export function ToyList({ toys, onRemoveToy }) {
               <Link className="btn btn-icon" to={`/toy/edit/${toy._id}`}>
                 <FontAwesomeIcon icon={faEdit} />
               </Link>
-              <button className="btn btn-icon" onClick={() => onRemoveToy(toy)}>
+              <button
+                className="btn btn-icon"
+                onClick={() => onRemoveToy(toy._id)}
+              >
                 <FontAwesomeIcon icon={faTrash} />
               </button>
             </div>

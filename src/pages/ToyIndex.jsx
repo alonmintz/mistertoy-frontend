@@ -1,18 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { ToyFilter } from "../cmps/toy/ToyFilter";
 import { ToyList } from "../cmps/toy/ToyList";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toyActions } from "../store/actions/toy.actions";
 import { showErrorMsg, showSuccessMsg } from "../service/event-bus.service";
-import { Link, Outlet, useSearchParams } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { SortBar } from "../cmps/toy/SortBar";
-import {
-  SET_FILTER_BY,
-  SET_SORT_AND_FILTER,
-  SET_SORT_BY,
-} from "../store/reducers/toy.reducer";
-import { toyService } from "../service/toy.service";
+import { SET_FILTER_BY, SET_SORT_BY } from "../store/reducers/toy.reducer";
 import { ConfirmAction } from "../cmps/general/ConfirnAction";
+import { useSortFilterSearchParams } from "../hooks/useSortFilterSearchParams";
 
 export function ToyIndex() {
   const toys = useSelector((storeState) => storeState.toyModule.toys);
@@ -20,27 +16,18 @@ export function ToyIndex() {
   const sortBy = useSelector((storeState) => storeState.toyModule.sortBy);
   const [showFilter, setShowFilter] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [toyToRemove, setToyToRemove] = useState(null);
-
+  const removeIdRef = useRef();
   const dispatch = useDispatch();
-  //TODO: implement searchParams. i'm stuck with it
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  //   useEffect(() => {
-  //     dispatch({
-  //       type: SET_SORT_AND_FILTER,
-  //       sortBy: toyService.getSortFromSearchParams(searchParams),
-  //       filterBy: toyService.getFilterFromSearchParams(searchParams),
-  //     });
-  //   }, []);
+  const setSortFilterSearchParams = useSortFilterSearchParams();
 
   useEffect(() => {
-    // setSearchParams({ ...filterBy, ...sortBy });
-
-    toyActions.loadToys().catch((err) => {
-      console.log(err);
-      showErrorMsg("Error loading toys");
-    });
+    toyActions
+      .loadToys()
+      .then(() => setSortFilterSearchParams(filterBy, sortBy))
+      .catch((err) => {
+        console.log(err);
+        showErrorMsg("Error loading toys");
+      });
   }, [filterBy, sortBy]);
 
   function toggleShowFilter() {
@@ -55,22 +42,22 @@ export function ToyIndex() {
     dispatch({ type: SET_FILTER_BY, filterBy: updatedFilterBy });
   }
 
-  function onRemoveButtonClick(toy) {
-    setToyToRemove(toy);
+  function onRemoveButtonClick(toyId) {
+    removeIdRef.current = toyId;
     toggleIsConfirmOpen();
   }
 
-  function onRemoveToy(toy) {
+  function onRemoveToy(toyId) {
     toyActions
-      .removeToy(toy._id)
+      .removeToy(toyId)
       .then(toggleIsConfirmOpen)
       .then(() => {
-        setToyToRemove(null);
+        removeIdRef.current = null;
         showSuccessMsg("Toy Removed");
       })
       .catch((err) => {
         console.log({ err });
-        showErrorMsg(`Error Removing Toy (id: ${toy._id})`);
+        showErrorMsg(`Error Removing Toy (id: ${toyId})`);
       });
   }
 
@@ -97,7 +84,7 @@ export function ToyIndex() {
       {isConfirmOpen && (
         <ConfirmAction
           action="remove"
-          onConfirm={() => onRemoveToy(toyToRemove)}
+          onConfirm={() => onRemoveToy(removeIdRef.current)}
           onCancel={toggleIsConfirmOpen}
         />
       )}
