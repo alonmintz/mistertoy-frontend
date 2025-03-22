@@ -1,0 +1,25 @@
+.user-msg {
+  background-color: $color-grey-800;
+  padding: 0.5em 1em;
+  position: fixed;
+  bottom: 1em;
+  right: 1em;
+  color: $color-grey-1000;
+  font-weight: bold;
+  border: 1px solid $color-dark-grey-1000;
+  border-radius: 1em;
+  z-index: 10;
+
+  &.success {
+    background-color: rgb(59, 172, 83);
+  }
+
+  &.error {
+    background-color: $color-red-1200;
+  }
+
+  button {
+    float: right;
+    margin: 1em;
+  }
+}
