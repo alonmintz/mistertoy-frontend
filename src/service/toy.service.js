@@ -78,7 +78,7 @@ function query(filterBy = {}, sortBy = {}) {
       throw new Error(err);
     });
 }
-//TODO: add catchs to all relevant function
+
 function get(toyId) {
   return storageService
     .get(TOY_KEY, toyId)

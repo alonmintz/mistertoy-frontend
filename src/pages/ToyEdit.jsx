@@ -78,7 +78,7 @@ export function ToyEdit() {
       })
       .catch((err) => {
         showErrorMsg("Cannot save toy");
-        console.log("err:", err);
+        console.log({ err });
       });
   }
 

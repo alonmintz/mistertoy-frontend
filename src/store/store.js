@@ -9,11 +9,9 @@ const rootReducer = combineReducers({
   cartModule: cartReducer,
 });
 
-// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 export const store = configureStore({
-  reducer: rootReducer, // Correctly specify the reducer here
+  reducer: rootReducer,
 });
-// export const store = configureStore(rootReducer, composeEnhancers());
 
 // For Debug (easy access from console):
 window.gStore = store;

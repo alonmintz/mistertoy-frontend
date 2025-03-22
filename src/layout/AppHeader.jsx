@@ -23,7 +23,6 @@ export function AppHeader() {
   function toggleIsSideMenuOpen() {
     setIsSideMenuOpen((prev) => !prev);
   }
-  console.log({ cartSize });
 
   return (
     <header className="app-header full main-layout">

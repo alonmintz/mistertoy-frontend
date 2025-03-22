@@ -25,7 +25,7 @@ export function ToyIndex() {
       .loadToys()
       .then(() => setSortFilterSearchParams(filterBy, sortBy))
       .catch((err) => {
-        console.log(err);
+        console.log({ err });
         showErrorMsg("Error loading toys");
       });
   }, [filterBy, sortBy]);

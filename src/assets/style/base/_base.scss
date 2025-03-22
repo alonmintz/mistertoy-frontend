@@ -51,21 +51,6 @@ img {
   }
 }
 
-// links
-// a {
-//     color: $clr1;
-
-//     &.active {
-//         background-color: $clr1;
-//         color: $clr2;
-//     }
-// }
-
-// mark {
-//     color: $clr1;
-//     background-color: transparent;
-// }
-
 input:focus {
   background-color: $color-grey-1100;
   transition: background-color 1s;

@@ -31,7 +31,6 @@
   border-radius: 1em 0 0 1em;
   z-index: 1000;
   animation: roll-in 0.3s ease forwards;
-  //TODO: fix roll-out
   &.closing {
     animation: roll-out 0.5s ease forwards;
   }
