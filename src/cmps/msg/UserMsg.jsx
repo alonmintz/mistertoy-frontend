@@ -20,7 +20,6 @@ export function UserMsg() {
   }
 
   if (!msg) return null;
-
   return (
     <section className={"user-msg " + msg.type}>
       <p>{msg.txt}</p>

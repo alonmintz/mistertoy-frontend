@@ -11,14 +11,19 @@ import {
   faInfo,
 } from "@fortawesome/free-solid-svg-icons";
 import { Backdrop } from "../cmps/general/Backdrop";
+import { useSelector } from "react-redux";
 
 export function AppHeader() {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
+  const cartSize = useSelector(
+    (storeState) => storeState.cartModule.items.length
+  );
   const navigate = useNavigate();
 
   function toggleIsSideMenuOpen() {
     setIsSideMenuOpen((prev) => !prev);
   }
+  console.log({ cartSize });
 
   return (
     <header className="app-header full main-layout">
@@ -26,7 +31,12 @@ export function AppHeader() {
         <img src={logo} alt="logo" onClick={() => navigate("/")} />
         <div className="btn-group">
           <Link className="btn btn-icon" to={"/cart"}>
-            <FontAwesomeIcon icon={faCartShopping} />
+            <div className="cart-icon">
+              {cartSize > 0 && (
+                <span className="cart-size-icon">{cartSize}</span>
+              )}
+              <FontAwesomeIcon icon={faCartShopping} />
+            </div>
           </Link>
           <button className="btn btn-icon" onClick={toggleIsSideMenuOpen}>
             <FontAwesomeIcon icon={faBars} />

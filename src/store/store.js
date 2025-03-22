@@ -2,9 +2,11 @@ import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 
 import { toyReducer } from "./reducers/toy.reducer.js";
+import { cartReducer } from "./reducers/cart.reducer.js";
 
 const rootReducer = combineReducers({
   toyModule: toyReducer,
+  cartModule: cartReducer,
 });
 
 // const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

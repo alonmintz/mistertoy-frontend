@@ -35,7 +35,10 @@ img {
 
 .btn {
   @include btn;
-
+  &:disabled {
+    background-color: $color-grey-800;
+    cursor: default;
+  }
   &-dark {
     @include btn($type: dark);
   }

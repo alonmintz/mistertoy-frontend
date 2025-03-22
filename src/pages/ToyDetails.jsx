@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toyService } from "../service/toy.service";
-import { showErrorMsg } from "../service/event-bus.service";
+import { showErrorMsg, showSuccessMsg } from "../service/event-bus.service";
 import { Popup } from "../cmps/general/Popup";
 import { Chat } from "../cmps/general/Chat";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,6 +12,7 @@ import {
   faGrip,
 } from "@fortawesome/free-solid-svg-icons";
 import { ToyList } from "../cmps/toy/ToyList";
+import { cartActions } from "../store/actions/cart.actions";
 
 export function ToyDetails() {
   const [toy, setToy] = useState(null);
@@ -61,9 +62,14 @@ export function ToyDetails() {
     setIsPopupOpen((prev) => !prev);
   }
 
+  function onAddToCart(ev) {
+    ev.preventDefault();
+    cartActions.addCartItem(toy).then(showSuccessMsg);
+  }
+
   if (!toy) return <section className="loader"> Loading...</section>;
   const { name, labels, price, imgUrl, inStock } = toy;
-  //TODO: add cart functionality
+
   return (
     <section className="toy-details">
       <nav>
@@ -99,7 +105,9 @@ export function ToyDetails() {
             deleniti quas reiciendis? Numquam quos eius inventore iste ipsum
             architecto minus saepe.
           </p>
-          <button className="btn">Add To Cart</button>
+          <button className="btn" onClick={onAddToCart} disabled={!toy.inStock}>
+            Add To Cart
+          </button>
         </article>
       </section>
       {relatedToys && (

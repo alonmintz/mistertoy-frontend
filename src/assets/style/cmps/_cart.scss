@@ -1,0 +1,53 @@
+.cart {
+  padding: 1em;
+  .cart-container {
+    margin: auto;
+    width: 50%;
+    display: grid;
+    justify-content: center;
+    & > .btn {
+      justify-self: center;
+    }
+    h2 {
+      justify-self: center;
+      text-align: center;
+    }
+    table {
+      border-spacing: 0 0.3em;
+      font-size: 1em;
+      min-width: 400px;
+      margin-bottom: 1em;
+      * {
+        padding: 0.3em;
+      }
+      thead {
+        background-color: $color-red-1000;
+        color: $color-grey-1000;
+      }
+      tbody {
+        tr {
+          border-bottom: 1px solid $color-dark-grey-1000;
+          td:nth-child(2),
+          td:nth-child(3) {
+            text-align: center;
+          }
+          &:last-child {
+            font-weight: 800;
+            border-bottom: transparent;
+            td {
+              background-color: $color-light-red-1200;
+              &:last-child {
+                background-color: transparent;
+              }
+            }
+          }
+        }
+      }
+    }
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 1em;
+    }
+  }
+}
