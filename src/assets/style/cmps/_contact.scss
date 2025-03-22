@@ -1,0 +1,52 @@
+.contact {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  min-height: calc(100vh - 120px); // Adjust for header/footer
+  background-color: #eeeeee;
+  .contact-card {
+    max-width: 600px;
+    width: 100%;
+    background-color: #bf3131;
+    border: 1px solid #333333;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    h2 {
+      color: #eeeeee;
+      margin-bottom: 1rem;
+      text-align: start;
+    }
+
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #eeeeee;
+      margin-bottom: 2rem;
+      text-align: start;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+
+      a {
+        display: inline-block;
+
+        img {
+          width: 40px;
+          height: 40px;
+          transition: transform 0.3s ease;
+
+          &:hover {
+            transform: scale(1.1);
+          }
+        }
+      }
+    }
+  }
+}

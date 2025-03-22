@@ -1,0 +1,62 @@
+.about {
+  .accordion-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-block: 2rem;
+
+    article {
+      border: 1px solid $color-grey-900;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      background-color: $color-grey-1000;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+      details {
+        overflow: hidden;
+
+        summary {
+          cursor: pointer;
+          padding: 1rem;
+          font-weight: 600;
+          font-size: 1.1rem;
+          background-color: $color-light-red-1000;
+          transition: background-color 0.3s ease;
+
+          &::marker {
+            display: none;
+          }
+        }
+
+        &[open] {
+          summary {
+            background-color: $color-red-800;
+            color: white;
+          }
+
+          .content {
+            max-height: 1000px;
+            padding: 1rem 1.5rem;
+          }
+        }
+
+        .content {
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.4s ease, padding 0.4s ease;
+          padding: 0 1.5rem;
+          line-height: 1.6;
+          background-color: $color-grey-1000;
+        }
+      }
+    }
+
+    ul {
+      padding-inline-start: 1.2rem;
+
+      li {
+        margin-block: 0.4rem;
+      }
+    }
+  }
+}
